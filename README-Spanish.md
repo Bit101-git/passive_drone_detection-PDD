@@ -8,29 +8,29 @@ El proyecto combina la **detección de video analógico en 5.8 GHz** mediante un
 
 ---
 
-## ✨ Características
+## Características
 
-* 📡 Monitoreo pasivo de radiofrecuencia
-* 📺 Detección de video FPV analógico
-* 📶 Monitoreo de actividad RF en 2.4 GHz
-* 🔍 Escaneo automático de **72 frecuencias FPV**
-* 📊 Análisis de señal RSSI
-* 📈 Cálculo de media y desviación estándar
-* 🎯 Umbrales dinámicos de detección
-* 🔄 Calibración automática del nivel base de ruido RSSI
-* 🧠 Puntaje de confianza de señal de **0 a 100**
-* ⏱️ Análisis de persistencia de detección
-* 🔒 Histéresis para bloqueo y pérdida de señal
-* 🚨 Detección de cambios de canal y banda
-* 📡 Detección de actividad compatible con FHSS
-* 🖥️ Dos pantallas OLED independientes
-* 💡 Indicadores LED
-* 🔊 Alertas mediante buzzer
-* 🖥️ Diagnóstico mediante puerto serie a **115200 baudios**
+*  Monitoreo pasivo de radiofrecuencia
+*  Detección de video FPV analógico
+*  Monitoreo de actividad RF en 2.4 GHz
+*  Escaneo automático de **72 frecuencias FPV**
+*  Análisis de señal RSSI
+*  Cálculo de media y desviación estándar
+*  Umbrales dinámicos de detección
+*  Calibración automática del nivel base de ruido RSSI
+*  Puntaje de confianza de señal de **0 a 100**
+*  Análisis de persistencia de detección
+*  Histéresis para bloqueo y pérdida de señal
+*  Detección de cambios de canal y banda
+*  Detección de actividad compatible con FHSS
+*  Dos pantallas OLED independientes
+*  Indicadores LED
+*  Alertas mediante buzzer
+*  Diagnóstico mediante puerto serie a **115200 baudios**
 
 ---
 
-## 🧩 Componentes de Hardware
+## Componentes de Hardware
 
 | Componente                |        Cantidad | Función                                     |
 | ------------------------- | --------------: | ------------------------------------------- |
@@ -46,7 +46,7 @@ El proyecto combina la **detección de video analógico en 5.8 GHz** mediante un
 
 ---
 
-## 🧠 Arquitectura del Sistema
+## Arquitectura del Sistema
 
 El detector utiliza dos subsistemas independientes de monitoreo RF:
 
@@ -77,7 +77,7 @@ El detector utiliza dos subsistemas independientes de monitoreo RF:
 
 ---
 
-# 📺 Detección de Video FPV en 5.8 GHz
+# Detección de Video FPV en 5.8 GHz
 
 El subsistema RX5808 escanea frecuencias comúnmente utilizadas por sistemas de video FPV analógico.
 
@@ -105,7 +105,7 @@ El rango configurado de frecuencias se extiende aproximadamente desde:
 
 ---
 
-## 📊 Análisis RSSI
+## Análisis RSSI
 
 Para cada frecuencia escaneada, el ESP32 toma múltiples muestras RSSI provenientes del RX5808.
 
@@ -125,7 +125,7 @@ Rango ADC: 0 – 4095
 
 ---
 
-## 🎯 Puntaje de Confianza
+## Puntaje de Confianza
 
 El sistema genera un puntaje de confianza entre:
 
@@ -145,7 +145,7 @@ Esto ayuda a reducir detecciones causadas por picos RF momentáneos o interferen
 
 ---
 
-## 🧪 Clasificación de Señales
+## Clasificación de Señales
 
 El firmware puede clasificar la señal más fuerte detectada como:
 
@@ -159,7 +159,7 @@ Una señal de video válida requiere suficiente intensidad, estabilidad, persist
 
 ---
 
-## 🎚️ Calibración Automática
+## Calibración Automática
 
 Al iniciar el sistema, se mide automáticamente el nivel base de ruido RSSI del entorno.
 
@@ -182,7 +182,7 @@ Esto permite adaptar el detector a diferentes entornos de radiofrecuencia.
 
 ---
 
-# 📡 Detección de 2.4 GHz / FHSS
+# Detección de 2.4 GHz / FHSS
 
 El segundo subsistema utiliza un **NRF24L01** conectado al ESP32 mediante HSPI.
 
@@ -211,7 +211,7 @@ Estas características pueden indicar actividad de tipo **FHSS (Frequency-Hoppin
 
 ---
 
-## ⚠️ Limitación de Detección de ExpressLRS
+## Limitación de Detección de ExpressLRS
 
 El NRF24L01 **no decodifica paquetes ExpressLRS**.
 
@@ -235,7 +235,7 @@ Otros transmisores de 2.4 GHz pueden producir patrones de actividad RF similares
 
 ---
 
-# 🖥️ Pantallas OLED
+# Pantallas OLED
 
 El proyecto utiliza **dos pantallas OLED SSD1306 de 128×64 píxeles**.
 
@@ -298,7 +298,7 @@ FHSS no concluyente
 
 ---
 
-# 🔌 Conexiones
+# Conexiones
 
 ## RX5808
 
@@ -343,7 +343,7 @@ FHSS no concluyente
 | VCC      | **3.3 V** |
 | GND      |       GND |
 
-> ⚠️ **No alimentes el NRF24L01 con 5 V. Utiliza únicamente 3.3 V.**
+**No alimentes el NRF24L01 con 5 V. Utiliza únicamente 3.3 V.**
 
 Se recomienda colocar un **capacitor de 10–100 µF** entre VCC y GND para mejorar la estabilidad de alimentación.
 
@@ -360,7 +360,7 @@ Se recomienda colocar un **capacitor de 10–100 µF** entre VCC y GND para mejo
 
 ---
 
-# 🚦 Estados de los LEDs
+# Estados de los LEDs
 
 ### 🟢 LED de Calibración
 
@@ -376,7 +376,7 @@ Se enciende cuando se detecta un patrón RF persistente compatible con FHSS.
 
 ---
 
-# 🔊 Buzzer
+# Buzzer
 
 El ESP32 genera la señal del buzzer mediante PWM.
 
@@ -395,7 +395,7 @@ El buzzer proporciona alertas acústicas durante eventos como:
 
 ---
 
-# 📚 Requisitos de Software
+# Requisitos de Software
 
 El firmware está diseñado para el entorno **Arduino para ESP32**.
 
@@ -447,7 +447,7 @@ El proyecto incluye una implementación mínima del SSD1306 directamente en el c
 
 ---
 
-# 🚀 Instalación
+# Instalación
 
 ### 1. Clonar el repositorio
 
@@ -495,7 +495,7 @@ Configura la velocidad en:
 
 ---
 
-# ⚙️ Parámetros Principales de Detección
+# Parámetros Principales de Detección
 
 Los principales parámetros pueden modificarse directamente en el firmware.
 
@@ -526,7 +526,7 @@ Estos valores controlan la sensibilidad, estabilidad, persistencia y comportamie
 
 ---
 
-# 🔬 Flujo de Detección
+# Flujo de Detección
 
 ### Video FPV Analógico
 
@@ -576,7 +576,7 @@ OLED / LED
 
 ---
 
-# 🔐 Funcionamiento Pasivo
+# Funcionamiento Pasivo
 
 Este proyecto está diseñado como un **detector pasivo**.
 
@@ -586,7 +586,7 @@ El RX5808 monitorea transmisiones de video FPV analógico, mientras que el NRF24
 
 ---
 
-# ⚠️ Limitaciones
+# Limitaciones
 
 Este proyecto no debe considerarse un sistema universal de identificación de drones.
 
@@ -606,7 +606,7 @@ El subsistema NRF24L01 detecta energía RF y patrones similares a FHSS, pero no 
 
 ---
 
-# 🛠️ Posibles Mejoras Futuras
+# Posibles Mejoras Futuras
 
 Algunas mejoras posibles incluyen:
 
@@ -625,7 +625,7 @@ Algunas mejoras posibles incluyen:
 
 ---
 
-# 🤝 Contribuciones
+# Contribuciones
 
 Las contribuciones son bienvenidas.
 
@@ -643,7 +643,7 @@ Puedes abrir un **Issue** o enviar un **Pull Request**.
 
 ---
 
-# 📜 Licencia
+# Licencia
 
 Este proyecto se distribuye bajo la **Licencia MIT**.
 
@@ -653,7 +653,7 @@ Consulta el archivo `LICENSE` para más información.
 
 ---
 
-# ⚠️ Aviso Legal
+# Aviso Legal
 
 Este proyecto está destinado a fines de **investigación, educación, experimentación y monitoreo de radiofrecuencia**.
 
@@ -663,8 +663,8 @@ Los autores y colaboradores no se hacen responsables del uso indebido del softwa
 
 ---
 
-## ⭐ Apoya el Proyecto
+## Apoya el Proyecto
 
-Si este proyecto te resulta útil, puedes darle una **estrella ⭐ al repositorio**.
+Si este proyecto te resulta útil, puedes darle una **estrella al repositorio**.
 
 Las contribuciones, pruebas, mejoras de documentación y comentarios son bienvenidos.
