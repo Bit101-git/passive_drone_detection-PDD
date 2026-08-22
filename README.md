@@ -9,29 +9,29 @@ The project combines **5.8 GHz analog video detection** using an RX5808 receiver
 
 ---
 
-## ✨ Features
+## Features
 
-* 📡 Passive RF monitoring
-* 📺 Analog FPV video detection
-* 📶 2.4 GHz RF activity monitoring
-* 🔍 Automatic scanning of **72 FPV frequencies**
-* 📊 RSSI signal analysis
-* 📈 Mean and standard deviation calculation
-* 🎯 Dynamic detection thresholds
-* 🔄 Automatic RSSI noise-floor calibration
-* 🧠 Signal confidence score from **0 to 100**
-* ⏱️ Detection persistence analysis
-* 🔒 Signal lock/unlock hysteresis
-* 🚨 Channel and band change detection
-* 📡 FHSS-compatible activity detection
-* 🖥️ Two independent OLED displays
-* 💡 LED status indicators
-* 🔊 Buzzer alerts
-* 🖥️ Serial debugging at **115200 baud**
+*  Passive RF monitoring
+*  Analog FPV video detection
+*  2.4 GHz RF activity monitoring
+*  Automatic scanning of **72 FPV frequencies**
+*  RSSI signal analysis
+*  Mean and standard deviation calculation
+*  Dynamic detection thresholds
+*  Automatic RSSI noise-floor calibration
+*  Signal confidence score from **0 to 100**
+*  Detection persistence analysis
+*  Signal lock/unlock hysteresis
+*  Channel and band change detection
+*  FHSS-compatible activity detection
+*  Two independent OLED displays
+*  LED status indicators
+*  Buzzer alerts
+*  Serial debugging at **115200 baud**
 
 ---
 
-## 🧩 Hardware
+## Hardware
 
 | Component                |    Quantity | Purpose                             |
 | ------------------------ | ----------: | ----------------------------------- |
@@ -47,7 +47,7 @@ The project combines **5.8 GHz analog video detection** using an RX5808 receiver
 
 ---
 
-## 🧠 System Architecture
+## System Architecture
 
 The detector uses two independent RF monitoring subsystems:
 
@@ -78,7 +78,7 @@ The detector uses two independent RF monitoring subsystems:
 
 ---
 
-# 📺 5.8 GHz FPV Video Detection
+# 5.8 GHz FPV Video Detection
 
 The RX5808 subsystem scans common analog FPV video frequencies.
 
@@ -106,7 +106,7 @@ The configured frequency range extends approximately from:
 
 ---
 
-## 📊 RSSI Analysis
+## RSSI Analysis
 
 For every scanned frequency, the ESP32 collects multiple RSSI samples from the RX5808.
 
@@ -126,7 +126,7 @@ ADC Range: 0 – 4095
 
 ---
 
-## 🎯 Confidence Score
+## Confidence Score
 
 The system generates a confidence score between:
 
@@ -146,7 +146,7 @@ This helps reduce detections caused by short RF spikes or unstable interference.
 
 ---
 
-## 🧪 Signal Classification
+## Signal Classification
 
 The firmware can classify the strongest detected signal as:
 
@@ -160,7 +160,7 @@ A valid video signal requires sufficient signal strength, stability, persistence
 
 ---
 
-## 🎚️ Automatic Calibration
+## Automatic Calibration
 
 At startup, the system automatically measures the local RSSI noise floor.
 
@@ -183,7 +183,7 @@ This allows the detector to adapt to different RF environments.
 
 ---
 
-# 📡 2.4 GHz / FHSS Detection
+# 2.4 GHz / FHSS Detection
 
 The second detection subsystem uses an **NRF24L01** connected to the ESP32 through HSPI.
 
@@ -212,7 +212,7 @@ These characteristics may indicate **frequency-hopping spread spectrum (FHSS)** 
 
 ---
 
-## ⚠️ ExpressLRS Detection Limitation
+## ExpressLRS Detection Limitation
 
 The NRF24L01 detector does **not decode ExpressLRS packets**.
 
@@ -236,7 +236,7 @@ Other 2.4 GHz transmitters may produce similar RF activity.
 
 ---
 
-# 🖥️ OLED Displays
+# OLED Displays
 
 The project uses **two SSD1306 128×64 OLED displays**.
 
@@ -299,7 +299,7 @@ FHSS no concluyente
 
 ---
 
-# 🔌 Pinout
+# Pinout
 
 ## RX5808
 
@@ -344,7 +344,7 @@ FHSS no concluyente
 | VCC      | **3.3 V** |
 | GND      |       GND |
 
-> ⚠️ **Do not power the NRF24L01 from 5 V. Use 3.3 V only.**
+**Do not power the NRF24L01 from 5 V. Use 3.3 V only.**
 
 A **10–100 µF capacitor** between VCC and GND is recommended to improve power stability.
 
@@ -361,7 +361,7 @@ A **10–100 µF capacitor** between VCC and GND is recommended to improve power
 
 ---
 
-# 🚦 LED Status
+# LED Status
 
 ### 🟢 Calibration LED
 
@@ -377,7 +377,7 @@ Turns on when a persistent FHSS-compatible RF pattern is detected.
 
 ---
 
-# 🔊 Buzzer
+# Buzzer
 
 The ESP32 generates the buzzer signal using PWM.
 
@@ -396,7 +396,7 @@ The buzzer provides audible feedback during events such as:
 
 ---
 
-# 📚 Software Requirements
+# Software Requirements
 
 The firmware is designed for the **ESP32 Arduino framework**.
 
@@ -448,7 +448,7 @@ The project contains a minimal SSD1306 implementation directly in the source cod
 
 ---
 
-# 🚀 Installation
+# Installation
 
 ### 1. Clone the repository
 
@@ -496,7 +496,7 @@ Set the baud rate to:
 
 ---
 
-# ⚙️ Main Detection Parameters
+# Main Detection Parameters
 
 The main detection parameters can be adjusted directly in the firmware.
 
@@ -527,7 +527,7 @@ These parameters control the sensitivity, stability, persistence, and behavior o
 
 ---
 
-# 🔬 Detection Workflow
+# Detection Workflow
 
 ### Analog FPV Video
 
@@ -577,7 +577,7 @@ Display / LED Alert
 
 ---
 
-# 🔐 Passive Operation
+# Passive Operation
 
 This project is designed as a **passive detector**.
 
@@ -587,7 +587,7 @@ The RX5808 monitors analog FPV video transmissions while the NRF24L01 monitors e
 
 ---
 
-# ⚠️ Limitations
+# Limitations
 
 This project should not be considered a universal drone identification system.
 
@@ -607,7 +607,7 @@ The NRF24L01 subsystem detects RF energy and FHSS-like patterns but cannot deter
 
 ---
 
-# 🛠️ Possible Future Improvements
+# Possible Future Improvements
 
 Potential improvements include:
 
@@ -626,7 +626,7 @@ Potential improvements include:
 
 ---
 
-# 🤝 Contributing
+# Contributing
 
 Contributions are welcome.
 
@@ -644,7 +644,7 @@ Feel free to open an **Issue** or submit a **Pull Request**.
 
 ---
 
-# 📜 License
+# License
 
 This project is released under the **MIT License**.
 
@@ -654,7 +654,7 @@ See the `LICENSE` file for more information.
 
 ---
 
-# ⚠️ Disclaimer
+# Disclaimer
 
 This project is intended for **research, education, experimentation, and RF monitoring**.
 
@@ -664,7 +664,7 @@ The authors and contributors are not responsible for misuse of the software or h
 
 ---
 
-## ⭐ Support the Project
+## Support the Project
 
 If you find this project useful, consider giving the repository a **star ⭐**.
 
