@@ -1,4 +1,4 @@
-# passive-drone-detection
+# Passive Dron Detection (PDD)
 Passive system for detecting and monitoring FPV drones and UAVs through radio-frequency signals. It scans analog video channels, analyzes signal strength, and generates alerts when a transmission is detected or lost.
 
 An **ESP32-based passive RF monitoring system** designed to detect radio-frequency activity associated with FPV drones.
@@ -221,38 +221,6 @@ Red video detection LED ──► GPIO 32
 Red FHSS detection LED ───► GPIO 33
 Buzzer ───────────────────► GPIO 4
 ```
-
----
-
-## System Architecture
-
-The detector uses two independent RF monitoring subsystems:
-
-```text
-                    ┌─────────────────┐
-                    │      ESP32      │
-                    │                 │
-                    │ Signal Analysis │
-                    │ Detection Logic │
-                    │ Alerts / UI     │
-                    └───────┬─────────┘
-                            │
-             ┌──────────────┴──────────────┐
-             │                             │
-             ▼                             ▼
-      ┌─────────────┐               ┌─────────────┐
-      │   RX5808    │               │  NRF24L01   │
-      │             │               │             │
-      │ 5.8 GHz FPV │               │  2.4 GHz RF │
-      │    Video    │               │    / FHSS   │
-      └──────┬──────┘               └──────┬──────┘
-             │                             │
-             ▼                             ▼
-      RSSI Analysis                 Channel Energy
-      Mean / StdDev                 Pattern Analysis
-      Confidence                    FHSS Detection
-```
-
 ---
 
 # 5.8 GHz FPV Video Detection
@@ -794,25 +762,6 @@ Detection performance can be affected by:
 * Local electromagnetic noise
 
 The NRF24L01 subsystem detects RF energy and FHSS-like patterns but cannot determine with certainty which protocol or device generated them.
-
----
-
-# Possible Future Improvements
-
-Potential improvements include:
-
-* Better RF front-end filtering
-* Directional antennas
-* Signal history logging
-* SD card logging
-* Web-based dashboard
-* Wi-Fi monitoring interface
-* Detection statistics
-* Spectrum visualization
-* GPS integration
-* Multiple receiving stations
-* Detection event timestamps
-* More advanced RF classification
 
 ---
 
