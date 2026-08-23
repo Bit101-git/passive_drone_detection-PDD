@@ -9,6 +9,63 @@ The project combines **5.8 GHz analog video detection** using an RX5808 receiver
 
 ---
 
+## Quick Start
+
+1. Assemble the hardware according to the wiring and pinout sections below.
+2. Install **ESP32 board support** in the Arduino IDE.
+3. Install the **RF24** library using the Arduino Library Manager.
+4. Open the project firmware (`.ino`) in the Arduino IDE.
+5. Select the correct ESP32 board and serial port.
+6. Compile and upload the firmware.
+7. Open the Serial Monitor at **115200 baud**.
+8. Power on the detector without a nearby FPV transmitter and allow the RSSI baseline calibration to complete.
+9. Power on an analog FPV transmitter and observe the video-monitor OLED, LEDs, and buzzer.
+10. Optionally connect the RX5808 **VIDEO / AV output** to a compatible composite monitor to view the received analog video in real time.
+
+> **Important:** Power the NRF24L01 from **3.3 V only**. A **10–100 µF capacitor** between VCC and GND is recommended for power stability.
+
+---
+
+## How Detection Works
+
+The detector combines two independent passive RF monitoring paths:
+
+```text
+                  Passive Drone Detection
+                           │
+             ┌─────────────┴─────────────┐
+             │                           │
+             ▼                           ▼
+      ┌─────────────┐             ┌─────────────┐
+      │   5.8 GHz   │             │   2.4 GHz   │
+      │   RX5808    │             │  NRF24L01   │
+      └──────┬──────┘             └──────┬──────┘
+             │                           │
+        FPV frequency                RF channel
+          scanning                    scanning
+             │                           │
+        RSSI samples                  RPD energy
+             │                           │
+      Mean / StdDev /              Active channels
+        persistence                + frequency spread
+             │                           │
+      Confidence score              FHSS-like pattern
+             │                           │
+             └─────────────┬─────────────┘
+                           ▼
+                     Detection logic
+                           │
+              ┌────────────┼────────────┐
+              ▼            ▼            ▼
+             OLED          LED        Buzzer
+```
+
+The **RX5808 path** scans analog FPV video frequencies and evaluates RSSI strength, stability, persistence, and confidence. The **NRF24L01 path** scans the 2.4 GHz band for distributed RF activity and frequency spread that may indicate an FHSS-like transmission.
+
+Both paths are passive: the system observes existing RF activity and does not need to establish a communication link with the detected transmitter.
+
+---
+
 ## Features
 
 *  Passive RF monitoring
@@ -103,6 +160,67 @@ The project combines **5.8 GHz analog video detection** using an RX5808 receiver
     </td>
   </tr>
 </table>
+
+---
+
+## Wiring Overview
+
+The following overview summarizes the main hardware connections. The detailed pinout tables are provided later in this README.
+
+### RX5808 → ESP32
+
+```text
+RX5808 DATA  ─────────────► GPIO 23
+RX5808 CLK   ─────────────► GPIO 18
+RX5808 CS    ─────────────► GPIO 5
+RX5808 RSSI  ─────────────► GPIO 34
+
+RX5808 VIDEO / AV OUT ────► Composite AV monitor / display (optional)
+RX5808 GND            ────► AV monitor GND
+```
+
+### NRF24L01 → ESP32
+
+```text
+NRF24L01 SCK   ───────────► GPIO 14
+NRF24L01 MISO  ───────────► GPIO 12
+NRF24L01 MOSI  ───────────► GPIO 13
+NRF24L01 CE    ───────────► GPIO 26
+NRF24L01 CSN   ───────────► GPIO 27
+NRF24L01 VCC   ───────────► 3.3 V
+NRF24L01 GND   ───────────► GND
+```
+
+```text
+          10–100 µF
+3.3 V ──────||────── GND
+       NRF24L01 supply
+```
+
+> **Warning:** Do **not** power the NRF24L01 from 5 V. Use **3.3 V only**.
+
+### OLED Displays → ESP32
+
+```text
+Video OLED
+SDA ──────────────────────► GPIO 21
+SCL ──────────────────────► GPIO 22
+I2C address ──────────────► 0x3C
+
+2.4 GHz OLED
+SDA ──────────────────────► GPIO 16
+SCL ──────────────────────► GPIO 17
+I2C address ──────────────► 0x3C
+```
+
+### Status LEDs and Buzzer
+
+```text
+Green calibration LED ────► GPIO 25
+Red video detection LED ──► GPIO 32
+Red FHSS detection LED ───► GPIO 33
+Buzzer ───────────────────► GPIO 4
+```
 
 ---
 
@@ -223,9 +341,9 @@ This helps reduce detections caused by short RF spikes or unstable interference.
 The firmware can classify the strongest detected signal as:
 
 ```text
-VIDEO_VALIDO
-RUIDO/INTERFERENCIA
-FUERTE_INESTABLE
+VALID_VIDEO
+NOISE/INTERFERENCE
+STRONG_UNSTABLE
 ```
 
 A valid video signal requires sufficient signal strength, stability, persistence, and confidence.
@@ -343,7 +461,7 @@ Status: TARGET
 B:R CH:4 5769MHz
 mean:1450 sd:45
 score:87
-VIDEO_VALIDO
+VALID_VIDEO
 ```
 
 ---
@@ -363,10 +481,10 @@ Example:
 ```text
 2.4 GHz / FHSS
 NRF24: OK
-Patron: ELRS?
+Pattern: ELRS?
 hits:8 conf:3/3
 2403-2478 MHz
-FHSS no concluyente
+FHSS inconclusive
 ```
 
 ---
@@ -525,7 +643,7 @@ The project contains a minimal SSD1306 implementation directly in the source cod
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+git clone https://github.com/Bit101-git/passive_drone_detection-PDD.git
 ```
 
 ### 2. Open the firmware
@@ -533,7 +651,7 @@ git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
 Open:
 
 ```text
-tesis.ino
+V1-analog_video_5.8Ghz.ino
 ```
 
 with the Arduino IDE.
