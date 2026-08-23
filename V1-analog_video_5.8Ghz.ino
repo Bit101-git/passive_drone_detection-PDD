@@ -5,10 +5,10 @@
 #include <math.h>
 #include <string.h>
 
-static const int PIN_RX5808_DATA = 23;   // CH1 (DATA)
-static const int PIN_RX5808_CLK  = 18;   // CH2 (CLK)
-static const int PIN_RX5808_CS   = 5;    // CH3 (CS)
-static const int PIN_RX5808_RSSI = 34;   // RSSI (ADC)
+static const int PIN_RX5808_DATA = 23;   
+static const int PIN_RX5808_CLK  = 18;  
+static const int PIN_RX5808_CS   = 5;   
+static const int PIN_RX5808_RSSI = 34;  
 
 static const int PIN_VIDEO_SDA = 21;
 static const int PIN_VIDEO_SCL = 22;
@@ -17,9 +17,9 @@ static const int PIN_ELRS_SCL  = 17;
 TwoWire I2C_VIDEO = TwoWire(0);
 TwoWire I2C_ELRS  = TwoWire(1);
 
-static const int PIN_LED_CAL   = 25; // verde
-static const int PIN_LED_VIDEO = 32; // rojo: video analogico
-static const int PIN_LED_ELRS  = 33; // rojo: saltos compatibles con ELRS
+static const int PIN_LED_CAL   = 25;
+static const int PIN_LED_VIDEO = 32;
+static const int PIN_LED_ELRS  = 33; 
 static const int PIN_BUZZER    = 4;
 
 static const int PIN_NRF_SCK  = 14;
@@ -44,19 +44,19 @@ static const uint16_t FREQS[9][8] = {
 };
 
 
-static const uint32_t SCAN_INTERVAL_MS = 1200;  // reevaluar canal
+static const uint32_t SCAN_INTERVAL_MS = 1200; 
 static const uint16_t TUNE_SETTLE_MS   = 25;
 
-static const int      RSSI_CAL_SAMPLES = 250;   // auto-cal baseline
+static const int      RSSI_CAL_SAMPLES = 250;  
 static const uint16_t RSSI_CAL_DELAY_MS = 4;
 
-static const int      RSSI_WINDOW_SAMPLES = 24; // por frecuencia: mean/stddev
+static const int      RSSI_WINDOW_SAMPLES = 24;
 static const uint16_t RSSI_WINDOW_DELAY_MS = 3;
 
-static const int      RSSI_MARGIN       = 220;  // baseline + margen => “señal”
-static const int      RSSI_STDDEV_MAX   = 120;  // estabilidad: stddev bajo
+static const int      RSSI_MARGIN       = 220; 
+static const int      RSSI_STDDEV_MAX   = 120; 
 
-static const int      RSSI_HYST         = 80;   // histéresis lock/unlock
+static const int      RSSI_HYST         = 80;  
 
 static const uint32_t NRF_SCAN_INTERVAL_MS = 40;
 static const uint8_t  NRF_FIRST_CHANNEL = 0;    // 2400 MHz
@@ -67,7 +67,7 @@ static const uint8_t  FHSS_MIN_SPREAD = 18;
 static const uint8_t  FHSS_CONFIRM_SCANS = 3;
 static const uint32_t FHSS_HOLD_MS = 1000;
 
-static const uint8_t VIDEO_PERSIST_N_DEFAULT = 3; // N configurable por defecto 3
+static const uint8_t VIDEO_PERSIST_N_DEFAULT = 3; 
 
 struct VideoLock {
   bool locked = false;
@@ -83,7 +83,7 @@ static int g_rssiThresholdOn  = 0; // baseline + margin
 static int g_rssiThresholdOff = 0; // thresholdOn - hyst
 
 static uint8_t  g_videoScore = 0;                 
-static char     g_videoClass[24] = "RUIDO/INTERFERENCIA";
+static char     g_videoClass[24] = "NOISE/INTERFERENCE";
 static uint8_t  g_videoPersistCount = 0;          
 static uint8_t  g_videoPersistN = VIDEO_PERSIST_N_DEFAULT;
 
@@ -235,14 +235,14 @@ static const char* classifySignal(int mean, int stddev, uint8_t score)
 {
   const int onTh = g_rssiThresholdOn;
 
-  if (mean >= (onTh + 250) && stddev > RSSI_STDDEV_MAX) return "FUERTE_INESTABLE";
-  if (mean < onTh || score < 40) return "RUIDO/INTERFERENCIA";
+  if (mean >= (onTh + 250) && stddev > RSSI_STDDEV_MAX) return "STRONG_UNSTABLE";
+  if (mean < onTh || score < 40) return "NOISE/INTERFERENCE";
 
   bool stable = stddev <= RSSI_STDDEV_MAX;
   bool present = mean >= onTh;
-  if (present && stable && score >= 70) return "VIDEO_VALIDO";
+  if (present && stable && score >= 70) return "VALID_VIDEO";
 
-  return "RUIDO/INTERFERENCIA";
+  return "NOISE/INTERFERENCE";
 }
 
 #if 0
@@ -369,7 +369,7 @@ static void pollCRSF()
 
           if (active && (now - g_lastCmdAlertMs >= COMMAND_RATE_MS)) {
             g_lastCmdAlertMs = now;
-            Serial.println("ALERTA: comandos activos detectados.");
+            Serial.println("ALERT: active commands detected.");
             digitalWrite(PIN_ALERT, HIGH);
             delay(30);
             digitalWrite(PIN_ALERT, LOW);
@@ -395,10 +395,10 @@ static void updateCRSFWatchdog()
 
   if (lost && !g_linkLost) {
     g_linkLost = true;
-    Serial.println("WATCHDOG: LINK LOST (sin CRSF valido).");
+    Serial.println("WATCHDOG: LINK LOST (no valid CRSF).");
   } else if (!lost && g_linkLost) {
     g_linkLost = false;
-    Serial.println("WATCHDOG: LINK OK (CRSF activo).");
+    Serial.println("WATCHDOG: LINK OK (CRSF active).");
   }
 }
 #endif
@@ -523,7 +523,7 @@ static void updateLedStateMachine()
 
 static void calibrateRSSI()
 {
-  Serial.println("Calibrando RSSI (baseline)... No transmitas cerca durante esto.");
+  Serial.println("Calibrating RSSI baseline... Do not transmit nearby during this process.");
   long sum = 0;
 
   g_calibrating = true;
@@ -550,8 +550,7 @@ static void calibrateRSSI()
 }
 
 static const uint8_t OLED_ADDR_VIDEO = 0x3C;
-static const uint8_t OLED_ADDR_ELRS  = 0x3C; // permitido: esta en otro bus
-
+static const uint8_t OLED_ADDR_ELRS  = 0x3C;
 static uint8_t g_oledBuf[1024];
 
 static const uint8_t Font5x7[95][5] PROGMEM = {
@@ -671,7 +670,7 @@ static void drawVideoScreen()
   oledClearBuf();
   oledDrawText(0, 0,  "VIDEO MONITOR");
   oledDrawText(0, 10, "Status:");
-  oledDrawText(48, 10, g_videoTarget ? "TARGET" : "BUSCANDO");
+  oledDrawText(48, 10, g_videoTarget ? "TARGET" : "SEARCHING");
 
   char line[32];
   if (g_video.band >= 0 && g_video.ch >= 0) {
@@ -696,7 +695,7 @@ static void drawElrsScreen()
   oledDrawText(0, 0, "2.4 GHz / FHSS");
   oledDrawText(0, 10, "NRF24:");
   oledDrawText(42, 10, g_nrfOk ? "OK" : "ERROR");
-  oledDrawText(0, 22, "Patron:");
+  oledDrawText(0, 22, "Pattern:");
   oledDrawText(42, 22, g_elrsTarget ? "ELRS?" : "NO");
 
   char line[32];
@@ -706,7 +705,7 @@ static void drawElrsScreen()
   snprintf(line, sizeof(line), "%u-%u MHz", 2400 + g_rfFirstHit,
            2400 + g_rfLastHit);
   oledDrawText(0, 46, line);
-  oledDrawText(0, 56, "FHSS no concluyente");
+  oledDrawText(0, 56, "FHSS inconclusive");
 }
 
 void setup()
@@ -727,9 +726,8 @@ void setup()
   digitalWrite(PIN_LED_VIDEO, LOW);
   digitalWrite(PIN_LED_ELRS, LOW);
 
-  // Buzzer init
   buzzerInit();
-  buzzerStart(180); // aviso breve al encender
+  buzzerStart(180);
 
   analogReadResolution(12);
 
@@ -779,8 +777,8 @@ void loop()
     strncpy(g_videoClass, cls, sizeof(g_videoClass) - 1);
     g_videoClass[sizeof(g_videoClass) - 1] = '\0';
 
-    bool videoValido = (strcmp(g_videoClass, "VIDEO_VALIDO") == 0);
-    g_videoTarget = (g_video.locked && videoValido);
+    bool validVideo = (strcmp(g_videoClass, "VALID_VIDEO") == 0);
+    g_videoTarget = (g_video.locked && validVideo);
 
     if (!g_video.locked) {
       if (present) {
@@ -788,7 +786,7 @@ void loop()
         g_video.band = b; g_video.ch = c; g_video.freq = f;
         g_video.mean = mean; g_video.stddev = sd;
 
-        Serial.print("VIDEO DETECTADO: Band-"); Serial.print(BAND_NAMES[b]);
+        Serial.print("VIDEO DETECTED: Band-"); Serial.print(BAND_NAMES[b]);
         Serial.print(" CH"); Serial.print(c + 1);
         Serial.print(" "); Serial.print(f); Serial.print("MHz");
         Serial.print(" mean="); Serial.print(mean);
@@ -796,7 +794,7 @@ void loop()
         Serial.print(" score="); Serial.print((int)g_videoScore);
         Serial.print(" class="); Serial.println(g_videoClass);
 
-        if (videoValido) {
+        if (validVideo) {
           buzzerStart(2000);
         }
       }
@@ -816,25 +814,23 @@ void loop()
         Serial.print(" class="); Serial.println(g_videoClass);
 
         if (changed) {
-          Serial.println("ALERTA: cambio de canal/banda detectado.");
-          if (videoValido) {
+          Serial.println("ALERT: channel/band change detected.");
+          if (validVideo) {
             buzzerStart(2000);
           }
         } else {
           static bool lastWasValid = false;
-          if (videoValido && !lastWasValid) buzzerStart(2000);
-          lastWasValid = videoValido;
+          if (validVideo && !lastWasValid) buzzerStart(2000);
+          lastWasValid = validVideo;
         }
       } else {
         g_video.locked = false;
         g_videoTarget = false;
-        Serial.println("VIDEO PERDIDO.");
+        Serial.println("VIDEO LOST.");
       }
     }
 
-    // El LED rojo refleja el resultado final de este barrido, sin parpadeos
-    // cuando no hay deteccion.
-    g_videoTarget = g_video.locked && videoValido;
+    g_videoTarget = g_video.locked && validVideo;
 
     drawVideoScreen();
     oledFlush(I2C_VIDEO, OLED_ADDR_VIDEO);
