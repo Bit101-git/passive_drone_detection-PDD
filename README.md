@@ -8,7 +8,12 @@ The project combines **5.8 GHz analog video detection** using an RX5808 receiver
 > **Note:** The 2.4 GHz detector identifies RF activity and frequency-hopping patterns compatible with FHSS. It does **not** uniquely or cryptographically identify ExpressLRS (ELRS).
 
 ---
+<p align="center">
+  <img src="Images/Front.jpeg" width="300">
+  <img src="Images/Reverse.jpeg" width="300">
+</p>
 
+---
 ## Quick Start
 
 1. Assemble the hardware according to the wiring and pinout sections below.
@@ -182,11 +187,11 @@ RX5808 GND            ────► AV monitor GND
 ### NRF24L01 → ESP32
 
 ```text
-NRF24L01 SCK   ───────────► GPIO 14
-NRF24L01 MISO  ───────────► GPIO 12
-NRF24L01 MOSI  ───────────► GPIO 13
-NRF24L01 CE    ───────────► GPIO 26
-NRF24L01 CSN   ───────────► GPIO 27
+NRF24L01 SCK   ───────────► GPIO 25
+NRF24L01 MISO  ───────────► GPIO 19
+NRF24L01 MOSI  ───────────► GPIO 26
+NRF24L01 CE    ───────────► GPIO 27
+NRF24L01 CSN   ───────────► GPIO 33
 NRF24L01 VCC   ───────────► 3.3 V
 NRF24L01 GND   ───────────► GND
 ```
@@ -216,10 +221,10 @@ I2C address ──────────────► 0x3C
 ### Status LEDs and Buzzer
 
 ```text
-Green calibration LED ────► GPIO 25
-Red video detection LED ──► GPIO 32
-Red FHSS detection LED ───► GPIO 33
-Buzzer ───────────────────► GPIO 4
+Green calibration LED ────► GPIO 12
+Red video detection LED ──► GPIO 14
+Red FHSS detection LED ───► GPIO 13
+Buzzer ───────────────────► GPIO 15
 ```
 ---
 
@@ -494,11 +499,11 @@ FHSS inconclusive
 
 | NRF24L01 |     ESP32 |
 | -------- | --------: |
-| SCK      |   GPIO 14 |
-| MISO     |   GPIO 12 |
-| MOSI     |   GPIO 13 |
-| CE       |   GPIO 26 |
-| CSN      |   GPIO 27 |
+| SCK      |   GPIO 25 |
+| MISO     |   GPIO 19 |
+| MOSI     |   GPIO 26 |
+| CE       |   GPIO 27 |
+| CSN      |   GPIO 33 |
 | VCC      | **3.3 V** |
 | GND      |       GND |
 
@@ -512,10 +517,10 @@ A **10–100 µF capacitor** between VCC and GND is recommended to improve power
 
 | Device                  | ESP32 GPIO |
 | ----------------------- | ---------: |
-| Green calibration LED   |    GPIO 25 |
-| Red video detection LED |    GPIO 32 |
-| Red FHSS detection LED  |    GPIO 33 |
-| Buzzer                  |     GPIO 4 |
+| Green calibration LED   |    GPIO 12 |
+| Red video detection LED |    GPIO 14 |
+| Red FHSS detection LED  |    GPIO 13 |
+| Buzzer                  |    GPIO 15 |
 
 ---
 
