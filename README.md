@@ -45,6 +45,65 @@ The project combines **5.8 GHz analog video detection** using an RX5808 receiver
 | 10–100 µF capacitor      |           1 | NRF24L01 power stabilization        |
 | Wires / PCB / Breadboard | As required | Hardware assembly                   |
 
+### Component Gallery
+
+<p align="center"><sub>Click an image to open the corresponding component page.</sub></p>
+
+<table>
+  <tr>
+    <td align="center" width="25%">
+      <a href="https://www.aliexpress.com/item/1005008433033497.html">
+        <img src="https://wrekd.com/cdn/shop/files/RX5808_1800x1800.jpg?v=1758237563" alt="RX5808" width="140"><br>
+        <b>RX5808</b>
+      </a>
+    </td>
+    <td align="center" width="25%">
+      <a href="https://joy-it.net/en/products/SBC-NodeMCU-ESP32-C">
+        <img src="https://joy-it.net/assets/images/f/SBC-NodeMCU-ESP32-C_01-1pdnt02nkz1ces7.png" alt="ESP32" width="140"><br>
+        <b>ESP32</b>
+      </a>
+    </td>
+    <td align="center" width="25%">
+      <a href="https://hubot.cl/producto/transceptor-rf-nrf24l01-2-4-ghz-con-antena-sku-638h1/">
+        <img src="https://hubot.cl/wp-content/uploads/2020/03/638-1-150x150.jpg" alt="NRF24L01" width="140"><br>
+        <b>NRF24L01</b>
+      </a>
+    </td>
+    <td align="center" width="25%">
+      <a href="https://naylampmechatronics.com/oled/850-display-oled-096-i2c-12864-ssd1306.html">
+        <img src="https://naylampmechatronics.com/3159-superlarge_default/display-oled-096-i2c-12864-ssd1306.jpg" alt="SSD1306 128x64 OLED" width="140"><br>
+        <b>SSD1306 128×64 OLED</b>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="25%">
+      <a href="https://cl.rsdelivers.com/product/kingbright/l-813gd/led-kingbright-l-813-verde-568nm-vf-22-v-60-l-10-2/0590187">
+        <img src="https://static.rapidonline.com/catalogueimages/product/55/03/s55-0305p01ws.jpg" alt="Green LED" width="140"><br>
+        <b>Green LED</b>
+      </a>
+    </td>
+    <td align="center" width="25%">
+      <a href="https://cl.rsdelivers.com/product/lite-on/ltl-307e/led-lite-on-ltl-rojo-623nm-vf-26-v-50-orificio-5-2/1689439">
+        <img src="https://media.rs-online.com/f_auto%2Cq_auto%2Cbo_1.5px_solid_white%2Cb_auto%2Cc_pad%2Cdpr_2%2Ch_399%2Cw_710/c_pad%2Ch_399%2Cw_710/R1278392-01?pgw=1" alt="Red LED" width="140"><br>
+        <b>Red LED</b>
+      </a>
+    </td>
+    <td align="center" width="25%">
+      <a href="https://www.electroardu.cl/buzzer-pasivo-5v">
+        <img src="https://cdnx.jumpseller.com/electroardu/image/42270382/resize/540/540?1700319331=" alt="Buzzer" width="140"><br>
+        <b>Buzzer</b>
+      </a>
+    </td>
+    <td align="center" width="25%">
+      <a href="https://www.mercadolibre.cl/bby-capacitor-electrolitico-100-uf-63v-10-piezas/p/MLC2095994835">
+        <img src="https://www.cdiscount.com/pdt2/5/1/0/1/550x550/aaajk53510/rw/condensateur-100uf-63v.jpg" alt="10-100 uF capacitor" width="140"><br>
+        <b>10–100 µF capacitor</b>
+      </a>
+    </td>
+  </tr>
+</table>
+
 ---
 
 ## System Architecture
@@ -81,6 +140,19 @@ The detector uses two independent RF monitoring subsystems:
 # 5.8 GHz FPV Video Detection
 
 The RX5808 subsystem scans common analog FPV video frequencies.
+
+## Optional Live Video Output
+
+If the RX5808 module exposes its **VIDEO / AV output**, it can be connected directly to a compatible **composite AV monitor or display** to watch the received analog FPV video in real time.
+
+```text
+RX5808 VIDEO / AV OUT  ─────►  Composite AV monitor / display
+RX5808 GND             ─────►  AV monitor GND
+```
+
+This connection is optional and independent from the ESP32 detection logic. The ESP32 uses the RX5808 control and RSSI signals for scanning and detection, while the external AV display can be used to visually inspect the video signal on the currently tuned channel.
+
+> **Note:** The exact video-output pin name and pinout can vary between RX5808 boards or breakout modules. Verify the pinout of your specific module before connecting an AV display.
 
 The firmware contains **9 FPV bands with 8 channels each**, providing a total of:
 
